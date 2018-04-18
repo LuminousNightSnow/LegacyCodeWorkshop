@@ -2,8 +2,4 @@
 
 #include "GildedRose.h"
 
-TEST(GildedRoseTest, Foo) {
-
-  EXPECT_TRUE(true);
-}
-
+TEST(GildedRoseTest, Foo) { EXPECT_TRUE(true); }
