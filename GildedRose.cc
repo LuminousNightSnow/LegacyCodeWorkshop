@@ -8,6 +8,12 @@ void GildedRose::updateQuality() {
       UpdateNormalItem(items[i]);
       return;
     }
+
+    if (items[i].name == "Aged Brie") {
+      UpdateBrieItem(items[i]);
+      return;
+    }
+
     if (items[i].name != "Aged Brie" &&
         items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
       if (items[i].quality > 0) {
@@ -76,4 +82,13 @@ void GildedRose::UpdateNormalItem(Item &item) const {
 
 void GildedRose::DecreaseQuality(Item &item) const {
   item.quality = max(item.quality - 1, min_quality_);
+}
+
+void GildedRose::UpdateBrieItem(Item &item) const {
+  item.days_remaining -= 1;
+  item.quality = std::min(item.quality + 1, max_quality_);
+
+  if (item.days_remaining < 0) {
+    item.quality = std::min(item.quality + 1, max_quality_);
+  }
 }

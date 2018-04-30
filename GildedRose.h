@@ -22,8 +22,10 @@ public:
 private:
   bool IsSpecialItem(Item item) const;
   void UpdateNormalItem(Item &item) const;
+  void UpdateBrieItem(Item &item) const;
 
   const int min_quality_ = 0;
+  const int max_quality_ = 50;
 
   inline void DecreaseQuality(Item &item) const;
 };
