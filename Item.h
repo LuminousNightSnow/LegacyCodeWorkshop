@@ -18,6 +18,7 @@ public:
 
   void DecreaseQuality() { quality_ = std::max(quality_ - 1, min_quality_); }
   void IncreaseQuality() { quality_ = std::min(quality_ + 1, max_quality_); }
+  void SetQualityToMin() { quality_ = 0; }
 
 private:
   const int min_quality_{0};
@@ -39,6 +40,28 @@ public:
   void Update() override;
 };
 
+class BrieItem : public IItem {
+public:
+  void Update() override;
+  BrieItem(const std::string &name, int days_remaining, int quality)
+      : IItem(name, days_remaining, quality) {}
+};
+
+class SulfurasItem : public IItem {
+public:
+  void Update() override;
+
+  SulfurasItem(const std::string &name, int days_remaining, int quality)
+      : IItem(name, days_remaining, quality) {}
+};
+
+class BackstagePassItem : public IItem {
+public:
+  void Update() override;
+
+  BackstagePassItem(const std::string &name, int days_remaining, int quality)
+      : IItem(name, days_remaining, quality) {}
+};
 using ItemPointer = std::shared_ptr<IItem>;
 using ItemContainer = std::vector<ItemPointer>;
 
