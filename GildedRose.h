@@ -20,6 +20,10 @@ public:
   void updateQuality();
 
 private:
-  bool IsSpecialItem(Item item);
-  void UpdateNormalItem(Item &item);
+  bool IsSpecialItem(Item item) const;
+  void UpdateNormalItem(Item &item) const;
+
+  const int min_quality_ = 0;
+
+  inline void DecreaseQuality(Item &item) const;
 };

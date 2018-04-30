@@ -59,17 +59,21 @@ void GildedRose::updateQuality() {
   }
 }
 
-bool GildedRose::IsSpecialItem(Item item) {
+bool GildedRose::IsSpecialItem(Item item) const {
   return item.name == "Aged Brie" ||
          item.name == "Sulfuras, Hand of Ragnaros" ||
          item.name == "Backstage passes to a TAFKAL80ETC concert";
 }
 
-void GildedRose::UpdateNormalItem(Item &item) {
+void GildedRose::UpdateNormalItem(Item &item) const {
   item.days_remaining -= 1;
-  item.quality = std::max(item.quality - 1, 0);
+  DecreaseQuality(item);
 
   if (item.days_remaining < 0) {
-    item.quality = std::max(item.quality - 1, 0);
+    DecreaseQuality(item);
   }
+}
+
+void GildedRose::DecreaseQuality(Item &item) const {
+  item.quality = max(item.quality - 1, min_quality_);
 }
