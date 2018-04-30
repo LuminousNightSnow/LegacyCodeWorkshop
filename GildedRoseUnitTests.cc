@@ -11,7 +11,10 @@ protected:
   int days_remaining_{5};
   int initial_quality_{20};
   string name_;
-  void MakeAndUpdateItem() {
+
+  const int max_quality_{50};
+
+  virtual void MakeAndUpdateItems() {
     items_.push_back(Item(name_, days_remaining_, initial_quality_));
     GildedRose app(items_);
     app.updateQuality();
@@ -27,92 +30,110 @@ public:
 class BrieItemTest : public ItemTest {
 public:
   BrieItemTest(const string &name_ = "Aged Brie") : ItemTest(name_) {}
+};
+
+class SulfurasItemTest : public ItemTest {
+public:
+  SulfurasItemTest(const string &name_ = "Sulfuras, Hand of Ragnaros")
+      : ItemTest(name_) {}
 
 protected:
-  const int max_quality_{50};
+  virtual void MakeAndUpdateItems() {
+    items_.push_back(Item(name_, days_remaining_, initial_quality_));
+    GildedRose app(items_);
+    app.updateQuality();
+    EXPECT_EQ(items_[0].days_remaining, days_remaining_);
+  }
+};
+
+class BackstagePassItem : public ItemTest {
+public:
+  BackstagePassItem(
+      const string &name_ = "Backstage passes to a TAFKAL80ETC concert")
+      : ItemTest(name_) {}
 };
 
 TEST_F(NormalItemTest, before_sell_date) {
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_ - 1);
 }
 
 TEST_F(NormalItemTest, on_sell_date) {
   days_remaining_ = 0;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_ - 2);
 }
 
 TEST_F(NormalItemTest, after_sell_date) {
   days_remaining_ = -1;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_ - 2);
 }
 
 TEST_F(NormalItemTest, zero_quality_after_sell_date) {
   days_remaining_ = -1;
   initial_quality_ = 0;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_);
 }
 
 TEST_F(NormalItemTest, zero_quality_before_sell_date) {
   days_remaining_ = 1;
   initial_quality_ = 0;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_);
 }
 
 TEST_F(NormalItemTest, zero_quality_at_sell_date) {
   days_remaining_ = 0;
   initial_quality_ = 0;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_);
 }
 
 TEST_F(NormalItemTest, sell_date_quality_one) {
   days_remaining_ = 0;
   initial_quality_ = 1;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_ - 1);
 }
 
 TEST_F(BrieItemTest, before_sell_date) {
   initial_quality_ = 0;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_ + 1);
 }
 
 TEST_F(BrieItemTest, before_sell_date_with_max_quality) {
   initial_quality_ = max_quality_;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_);
 }
 
 TEST_F(BrieItemTest, on_sell_date) {
   days_remaining_ = 0;
   initial_quality_ = 10;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_ + 2);
 }
 
 TEST_F(BrieItemTest, on_sell_date_near_max_quality) {
   days_remaining_ = 0;
   initial_quality_ = 49;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, max_quality_);
 }
 
 TEST_F(BrieItemTest, on_sell_date_with_max_quality) {
   days_remaining_ = 0;
   initial_quality_ = max_quality_;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, max_quality_);
 }
 
 TEST_F(BrieItemTest, after_sell_date) {
   days_remaining_ = -10;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, initial_quality_ + 2);
 }
 
@@ -120,6 +141,94 @@ TEST_F(BrieItemTest, after_sell_date_with_max_quality) {
 
   days_remaining_ = -10;
   initial_quality_ = max_quality_;
-  MakeAndUpdateItem();
+  MakeAndUpdateItems();
   EXPECT_EQ(items_[0].quality, max_quality_);
+}
+
+TEST_F(SulfurasItemTest, before_sell_date) {
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, initial_quality_);
+}
+
+TEST_F(SulfurasItemTest, on_sell_date) {
+  days_remaining_ = 0;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, initial_quality_);
+}
+
+TEST_F(SulfurasItemTest, after_sell_date) {
+  days_remaining_ = -1;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, initial_quality_);
+}
+
+TEST_F(BackstagePassItem, long_before_sell_date) {
+  days_remaining_ = 20;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, initial_quality_ + 1);
+}
+
+TEST_F(BackstagePassItem, close_to_sell_date_upper_bound) {
+  days_remaining_ = 10;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, initial_quality_ + 2);
+}
+
+TEST_F(BackstagePassItem, close_to_sell_date_upper_bound_at_max_quality) {
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, max_quality_);
+}
+
+TEST_F(BackstagePassItem, close_to_sell_date_lower_bound) {
+  days_remaining_ = 6;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, initial_quality_ + 2);
+}
+
+TEST_F(BackstagePassItem, close_to_sell_date_lower_bound_at_max_quality) {
+  days_remaining_ = 6;
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, max_quality_);
+}
+
+TEST_F(BackstagePassItem, very_close_to_sell_date_upper_bound) {
+  days_remaining_ = 5;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, initial_quality_ + 3);
+}
+
+TEST_F(BackstagePassItem, very_close_to_sell_date_upper_bound_at_max_quality) {
+  days_remaining_ = 5;
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, max_quality_);
+}
+
+TEST_F(BackstagePassItem, very_close_to_sell_date_lower_bound) {
+  days_remaining_ = 1;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, initial_quality_ + 3);
+}
+
+TEST_F(BackstagePassItem, very_close_to_sell_date_lower_bound_at_max_quality) {
+
+  days_remaining_ = 1;
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, max_quality_);
+}
+
+TEST_F(BackstagePassItem, on_sell_date) {
+
+  days_remaining_ = 0;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, 0);
+}
+
+TEST_F(BackstagePassItem, after_sell_date) {
+  days_remaining_ = -1;
+  MakeAndUpdateItems();
+  EXPECT_EQ(items_[0].quality, 0);
 }
