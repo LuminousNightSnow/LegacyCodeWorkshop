@@ -8,18 +8,10 @@ public:
 
 protected:
   vector<Item> items_;
-  int days_remaining_{0};
+  int days_remaining_{5};
   int initial_quality_{20};
   string name_;
-  virtual void MakeAndUpdateItem() = 0;
-};
-
-class NormalItemTest : public ItemTest {
-public:
-  NormalItemTest(const string &name_ = "+5 Dexterity Vest") : ItemTest(name_) {}
-
-protected:
-  void MakeAndUpdateItem() override {
+  void MakeAndUpdateItem() {
     items_.push_back(Item(name_, days_remaining_, initial_quality_));
     GildedRose app(items_);
     app.updateQuality();
@@ -27,8 +19,20 @@ protected:
   }
 };
 
+class NormalItemTest : public ItemTest {
+public:
+  NormalItemTest(const string &name_ = "+5 Dexterity Vest") : ItemTest(name_) {}
+};
+
+class BrieItemTest : public ItemTest {
+public:
+  BrieItemTest(const string &name_ = "Aged Brie") : ItemTest(name_) {}
+
+protected:
+  const int max_quality_{50};
+};
+
 TEST_F(NormalItemTest, before_sell_date) {
-  days_remaining_ = 10;
   MakeAndUpdateItem();
   EXPECT_EQ(items_[0].quality, initial_quality_ - 1);
 }
@@ -71,4 +75,51 @@ TEST_F(NormalItemTest, sell_date_quality_one) {
   initial_quality_ = 1;
   MakeAndUpdateItem();
   EXPECT_EQ(items_[0].quality, initial_quality_ - 1);
+}
+
+TEST_F(BrieItemTest, before_sell_date) {
+  initial_quality_ = 0;
+  MakeAndUpdateItem();
+  EXPECT_EQ(items_[0].quality, initial_quality_ + 1);
+}
+
+TEST_F(BrieItemTest, before_sell_date_with_max_quality) {
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItem();
+  EXPECT_EQ(items_[0].quality, initial_quality_);
+}
+
+TEST_F(BrieItemTest, on_sell_date) {
+  days_remaining_ = 0;
+  initial_quality_ = 10;
+  MakeAndUpdateItem();
+  EXPECT_EQ(items_[0].quality, initial_quality_ + 2);
+}
+
+TEST_F(BrieItemTest, on_sell_date_near_max_quality) {
+  days_remaining_ = 0;
+  initial_quality_ = 49;
+  MakeAndUpdateItem();
+  EXPECT_EQ(items_[0].quality, max_quality_);
+}
+
+TEST_F(BrieItemTest, on_sell_date_with_max_quality) {
+  days_remaining_ = 0;
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItem();
+  EXPECT_EQ(items_[0].quality, max_quality_);
+}
+
+TEST_F(BrieItemTest, after_sell_date) {
+  days_remaining_ = -10;
+  MakeAndUpdateItem();
+  EXPECT_EQ(items_[0].quality, initial_quality_ + 2);
+}
+
+TEST_F(BrieItemTest, after_sell_date_with_max_quality) {
+
+  days_remaining_ = -10;
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItem();
+  EXPECT_EQ(items_[0].quality, max_quality_);
 }
