@@ -1,11 +1,11 @@
-#include <gtest/gtest.h>
-
 #include "GildedRose.h"
 #include "GildedRoseOO.h"
+#include <gtest/gtest.h>
+#include <utility>
 
 class ItemTest : public testing::Test {
 public:
-  ItemTest(const string &name_) : name_(name_) {}
+  ItemTest(std::string name_) : name_(std::move(name_)) {}
 
 protected:
   ItemContainer items_;
@@ -15,30 +15,34 @@ protected:
 
   const int max_quality_{50};
 
-  virtual void MakeAndUpdateItems() = 0;
+  void UpdateItem(ItemPointer item) {
+    items_.push_back(item);
+    GildedRoseOO unit(items_);
+    unit.updateQuality();
+  }
+
+  virtual void Init() {
+    UpdateItem(MakeItem());
+    EXPECT_EQ(items_[0]->GetDaysRemaining(), days_remaining_ - 1);
+  }
+
+  virtual ItemPointer MakeItem() = 0;
 };
 
 class NormalItemTest : public ItemTest {
 public:
   NormalItemTest(const string &name_ = "+5 Dexterity Vest") : ItemTest(name_) {}
-  virtual void MakeAndUpdateItems() override {
-    items_.push_back(std::shared_ptr<IItem>(
-        new NormalItem(name_, days_remaining_, initial_quality_)));
-    GildedRoseOO app(items_);
-    app.updateQuality();
-    EXPECT_EQ(items_[0]->GetDaysRemaining(), days_remaining_ - 1);
+  virtual ItemPointer MakeItem() override {
+    return ItemPointer(
+        new NormalItem(name_, days_remaining_, initial_quality_));
   }
 };
 
 class BrieItemTest : public ItemTest {
 public:
   BrieItemTest(const string &name_ = "Aged Brie") : ItemTest(name_) {}
-  virtual void MakeAndUpdateItems() override {
-    items_.push_back(std::shared_ptr<IItem>(
-        new BrieItem(name_, days_remaining_, initial_quality_)));
-    GildedRoseOO app(items_);
-    app.updateQuality();
-    EXPECT_EQ(items_[0]->GetDaysRemaining(), days_remaining_ - 1);
+  virtual ItemPointer MakeItem() override {
+    return ItemPointer(new BrieItem(name_, days_remaining_, initial_quality_));
   }
 };
 
@@ -48,12 +52,16 @@ public:
       : ItemTest(name_) {}
 
 protected:
-  virtual void MakeAndUpdateItems() override {
-    items_.push_back(std::shared_ptr<IItem>(
-        new SulfurasItem(name_, days_remaining_, initial_quality_)));
-    GildedRoseOO app(items_);
-    app.updateQuality();
+  void Init() override {
+    UpdateItem(MakeItem());
     EXPECT_EQ(items_[0]->GetDaysRemaining(), days_remaining_);
+  }
+
+protected:
+  virtual ItemPointer MakeItem() override {
+    return ItemPointer(
+        new SulfurasItem(name_, days_remaining_, initial_quality_));
+    //    EXPECT_EQ(items_[0]->GetDaysRemaining(), days_remaining_);
   }
 };
 
@@ -64,96 +72,93 @@ public:
       : ItemTest(name_) {}
 
 protected:
-  virtual void MakeAndUpdateItems() override {
-    items_.push_back(std::shared_ptr<IItem>(
-        new BackstagePassItem(name_, days_remaining_, initial_quality_)));
-    GildedRoseOO app(items_);
-    app.updateQuality();
-    EXPECT_EQ(items_[0]->GetDaysRemaining(), days_remaining_ - 1);
+  virtual ItemPointer MakeItem() override {
+    return ItemPointer(
+        new BackstagePassItem(name_, days_remaining_, initial_quality_));
   }
 };
 
 TEST_F(NormalItemTest, before_sell_date) {
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ - 1);
 }
 
 TEST_F(NormalItemTest, on_sell_date) {
   days_remaining_ = 0;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ - 2);
 }
 
 TEST_F(NormalItemTest, after_sell_date) {
   days_remaining_ = -1;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ - 2);
 }
 
 TEST_F(NormalItemTest, zero_quality_after_sell_date) {
   days_remaining_ = -1;
   initial_quality_ = 0;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_);
 }
 
 TEST_F(NormalItemTest, zero_quality_before_sell_date) {
   days_remaining_ = 1;
   initial_quality_ = 0;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_);
 }
 
 TEST_F(NormalItemTest, zero_quality_at_sell_date) {
   days_remaining_ = 0;
   initial_quality_ = 0;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_);
 }
 
 TEST_F(NormalItemTest, sell_date_quality_one) {
   days_remaining_ = 0;
   initial_quality_ = 1;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ - 1);
 }
 
 TEST_F(BrieItemTest, before_sell_date) {
   initial_quality_ = 0;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ + 1);
 }
 
 TEST_F(BrieItemTest, before_sell_date_with_max_quality) {
   initial_quality_ = max_quality_;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_);
 }
 
 TEST_F(BrieItemTest, on_sell_date) {
   days_remaining_ = 0;
   initial_quality_ = 10;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ + 2);
 }
 
 TEST_F(BrieItemTest, on_sell_date_near_max_quality) {
   days_remaining_ = 0;
   initial_quality_ = 49;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), max_quality_);
 }
 
 TEST_F(BrieItemTest, on_sell_date_with_max_quality) {
   days_remaining_ = 0;
   initial_quality_ = max_quality_;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), max_quality_);
 }
 
 TEST_F(BrieItemTest, after_sell_date) {
   days_remaining_ = -10;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ + 2);
 }
 
@@ -161,61 +166,61 @@ TEST_F(BrieItemTest, after_sell_date_with_max_quality) {
 
   days_remaining_ = -10;
   initial_quality_ = max_quality_;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), max_quality_);
 }
 
 TEST_F(SulfurasItemTest, before_sell_date) {
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_);
 }
 
 TEST_F(SulfurasItemTest, on_sell_date) {
   days_remaining_ = 0;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_);
 }
 
 TEST_F(SulfurasItemTest, after_sell_date) {
   days_remaining_ = -1;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_);
 }
 
 TEST_F(BackstagePassItemTest, long_before_sell_date) {
   days_remaining_ = 20;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ + 1);
 }
 
 TEST_F(BackstagePassItemTest, close_to_sell_date_upper_bound) {
   days_remaining_ = 10;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ + 2);
 }
 
 TEST_F(BackstagePassItemTest, close_to_sell_date_upper_bound_at_max_quality) {
   initial_quality_ = max_quality_;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), max_quality_);
 }
 
 TEST_F(BackstagePassItemTest, close_to_sell_date_lower_bound) {
   days_remaining_ = 6;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ + 2);
 }
 
 TEST_F(BackstagePassItemTest, close_to_sell_date_lower_bound_at_max_quality) {
   days_remaining_ = 6;
   initial_quality_ = max_quality_;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), max_quality_);
 }
 
 TEST_F(BackstagePassItemTest, very_close_to_sell_date_upper_bound) {
   days_remaining_ = 5;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ + 3);
 }
 
@@ -223,13 +228,13 @@ TEST_F(BackstagePassItemTest,
        very_close_to_sell_date_upper_bound_at_max_quality) {
   days_remaining_ = 5;
   initial_quality_ = max_quality_;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), max_quality_);
 }
 
 TEST_F(BackstagePassItemTest, very_close_to_sell_date_lower_bound) {
   days_remaining_ = 1;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), initial_quality_ + 3);
 }
 
@@ -238,19 +243,19 @@ TEST_F(BackstagePassItemTest,
 
   days_remaining_ = 1;
   initial_quality_ = max_quality_;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), max_quality_);
 }
 
 TEST_F(BackstagePassItemTest, on_sell_date) {
 
   days_remaining_ = 0;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), 0);
 }
 
 TEST_F(BackstagePassItemTest, after_sell_date) {
   days_remaining_ = -1;
-  MakeAndUpdateItems();
+  Init();
   EXPECT_EQ(items_[0]->GetQuality(), 0);
 }

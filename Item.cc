@@ -27,10 +27,10 @@ void BackstagePassItem::Update() {
     return;
   }
   IncreaseQuality();
-  if (GetDaysRemaining() < 10) {
+  if (GetDaysRemaining() < days_close_to_sell_date_) {
     IncreaseQuality();
   }
-  if (GetDaysRemaining() < 5) {
+  if (GetDaysRemaining() < days_very_close_to_sell_date_) {
     IncreaseQuality();
   }
 }

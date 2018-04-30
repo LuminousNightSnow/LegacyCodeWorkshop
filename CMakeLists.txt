@@ -6,6 +6,8 @@ project(cpp)
 set(CMAKE_THREAD_LIBS_INIT pthread)
 
 set(CMAKE_CXX_STANDARD 17)
+#set(GCC_COVERAGE_COMPILE_FLAGS " -O0 -fprofile-arcs -ftest-coverage")
+#set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 
 set(EXT_PROJECTS_DIR ${PROJECT_SOURCE_DIR}/ext)
 set(gtest_SOURCE_DIR ${EXT_PROJECTS_DIR}/googletest/googletest)
@@ -18,7 +20,7 @@ include_directories(${gtest_SOURCE_DIR}/include)
 set(GILDED_ROSE_SOURCE_FILES
         GildedRose.cc
         GildedRose.h
-        )
+        Item.h Item.cc GildedRoseOO.h)
 
 set(GILDED_ROSE_UNIT_TESTS_SOURCE_FILES
         ${GILDED_ROSE_SOURCE_FILES}

@@ -18,7 +18,7 @@ public:
 
   void DecreaseQuality() { quality_ = std::max(quality_ - 1, min_quality_); }
   void IncreaseQuality() { quality_ = std::min(quality_ + 1, max_quality_); }
-  void SetQualityToMin() { quality_ = 0; }
+  int GetQuality() const { return quality_; }
 
 private:
   const int min_quality_{0};
@@ -28,8 +28,8 @@ private:
   int days_remaining_;
   int quality_;
 
-public:
-  int GetQuality() const { return quality_; }
+protected:
+  void SetQualityToMin() { quality_ = min_quality_; }
 };
 
 class NormalItem : public IItem {
@@ -61,7 +61,12 @@ public:
 
   BackstagePassItem(const std::string &name, int days_remaining, int quality)
       : IItem(name, days_remaining, quality) {}
+
+private:
+  const int days_close_to_sell_date_{10};
+  const int days_very_close_to_sell_date_{5};
 };
+
 using ItemPointer = std::shared_ptr<IItem>;
 using ItemContainer = std::vector<ItemPointer>;
 
