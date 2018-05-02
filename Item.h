@@ -20,6 +20,10 @@ public:
   void IncreaseQuality() { quality_ = std::min(quality_ + 1, max_quality_); }
   int GetQuality() const { return quality_; }
 
+    const std::string &GetName() const {
+        return name_;
+    }
+
 private:
   const int min_quality_{0};
   const int max_quality_{50};

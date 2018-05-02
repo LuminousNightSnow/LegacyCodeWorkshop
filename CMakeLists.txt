@@ -35,6 +35,10 @@ set(GILDED_ROSE_CHARAC_TESTS_SOURCE_FILES
 
 add_subdirectory(${gtest_SOURCE_DIR} ${gtest_SOURCE_DIR}/bin EXCLUDE_FROM_ALL)
 add_executable(GildedRose ${GILDED_ROSE_SOURCE_FILES} GildedRoseMain.cc)
+
+add_executable(GildedRoseOO ${GILDED_ROSE_SOURCE_FILES} GildedRoseOOMain.cc)
+
+
 #target_link_libraries(GildedRose gtest gtest_main ${CMAKE_THREAD_LIBS_INIT})
 #target_link_libraries(GildedRose gtest gtest_main ${CMAKE_THREAD_LIBS_INIT})
 

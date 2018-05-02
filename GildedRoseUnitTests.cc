@@ -61,7 +61,6 @@ protected:
   virtual ItemPointer MakeItem() override {
     return ItemPointer(
         new SulfurasItem(name_, days_remaining_, initial_quality_));
-    //    EXPECT_EQ(items_[0]->GetDaysRemaining(), days_remaining_);
   }
 };
 
