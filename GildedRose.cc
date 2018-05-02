@@ -3,22 +3,22 @@
 GildedRose::GildedRose(vector<Item> &items) : items(items) {}
 
 void GildedRose::updateQuality() {
-  for (int i = 0; i < items.size(); i++) {
-    if (!IsSpecialItem(items[i])) {
-      UpdateNormalItem(items[i]);
+  for (auto &item : items) {
+    if (!IsSpecialItem(item)) {
+      UpdateNormalItem(item);
       continue;
     }
-    if (items[i].name == "Aged Brie") {
-      UpdateBrieItem(items[i]);
-      continue;
-    }
-
-    if (items[i].name == "Sulfuras, Hand of Ragnaros") {
+    if (item.name == "Aged Brie") {
+      UpdateBrieItem(item);
       continue;
     }
 
-    if (items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
-      UpdateBackstagePassItem(items[i]);
+    if (item.name == "Sulfuras, Hand of Ragnaros") {
+      continue;
+    }
+
+    if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
+      UpdateBackstagePassItem(item);
       continue;
     }
   }
