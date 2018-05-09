@@ -1,59 +1,63 @@
 #include "GildedRose.h"
 
-GildedRose::GildedRose(vector<Item> &items) : items(items) {}
 
-const std::string item1 = "Aged Brie";
-const std::string item2 = "Backstage passes to a TAFKAL80ETC concert";
-const std::string item3 = "Sulfuras, Hand of Ragnaros";
+std::ostream &operator<<(std::ostream &s, Item &item) {
+  s << item.t << ", " << item.d << ", " << item.v;
+  return s;
+}
 
 void GildedRose::updateQuality() {
-  for (int i = 0; i < items.size(); i++) {
-    if (items[i].t != item1 && items[i].t != item2) {
-      if (items[i].v > 0) {
-        if (items[i].t != item3) {
-          items[i].v -= 1;
+  for (int i = 0; i < items_.size(); i++) {
+    if (items_[i].t != item1 && items_[i].t != item2) {
+      if (items_[i].v > 0) {
+        if (items_[i].t != item3) {
+          items_[i].v -= 1;
         }
       }
     } else {
-      if (items[i].v < 50) {
-        items[i].v = items[i].v + 1;
-
-        if (items[i].t == item2) {
-          if (items[i].d < 11) {
-            if (items[i].v < 50) {
-              items[i].v += 1;
+      if (items_[i].v < 50) {
+        items_[i].v = items_[i].v + 1;
+        if (items_[i].t == item2) {
+          if (items_[i].d < 11) {
+            if (items_[i].v < 50) {
+              items_[i].v += 1;
             }
           }
-
-          if (items[i].d < 6) {
-            if (items[i].v < 50) {
-              items[i].v++;
+          if (items_[i].d < 6) {
+            if (items_[i].v < 50) {
+              items_[i].v++;
             }
           }
         }
       }
     }
-
-    if (items[i].t != item3) {
-      --items[i].d;
+    if (items_[i].t != item3) {
+      --items_[i].d;
     }
-
-    if (items[i].d < 0) {
-      if (items[i].t != item1) {
-        if (items[i].t != item2) {
-          if (items[i].v > 0) {
-            if (items[i].t != item3) {
-              items[i].v = items[i].v - 1;
+    if (items_[i].d < 0) {
+      if (items_[i].t != item1) {
+        if (items_[i].t != item2) {
+          if (items_[i].v > 0) {
+            if (items_[i].t != item3) {
+              items_[i].v = items_[i].v - 1;
             }
           }
         } else {
-          items[i].v = items[i].v - items[i].v;
+          items_[i].v = items_[i].v - items_[i].v;
         }
       } else {
-        if (items[i].v < 50) {
-          ++items[i].v;
+        if (items_[i].v < 50) {
+          ++items_[i].v;
         }
       }
     }
+  }
+}
+
+void GildedRose::addItem(const Item &item) { items_.push_back(item); }
+
+void GildedRose::printItems() {
+  for (vector<Item>::iterator i = items_.begin(); i != items_.end(); i++) {
+    std::cout << *i << std::endl;
   }
 }
