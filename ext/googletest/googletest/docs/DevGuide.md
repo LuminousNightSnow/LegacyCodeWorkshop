@@ -63,7 +63,7 @@ We are excited that Google Test is now open source, and hope to get
 great patches from the community. Before you fire up your favorite IDE
 and begin hammering away at that new feature, though, please take the
 time to read this section and understand the process. While it seems
-rigorous, we want to keep a high standard of quality in the code
+rigorous, we want to keep a high standard of v in the code
 base.
 
 ## Contributor License Agreements ##

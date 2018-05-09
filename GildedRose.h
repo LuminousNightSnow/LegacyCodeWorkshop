@@ -5,11 +5,11 @@ using namespace std;
 
 class Item {
 public:
-  string name;
-  int days_remaining;
-  int quality;
+  string t;
+  int d;
+  int v;
   Item(string name, int days_remaining, int quality)
-      : name(name), days_remaining(days_remaining), quality(quality) {}
+      : t(name), d(days_remaining), v(quality) {}
 };
 
 class GildedRose {

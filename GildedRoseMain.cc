@@ -5,7 +5,7 @@
 using namespace std;
 
 ostream &operator<<(ostream &s, Item &item) {
-  s << item.name << ", " << item.days_remaining << ", " << item.quality;
+  s << item.t << ", " << item.d << ", " << item.v;
   return s;
 }
 
@@ -25,7 +25,6 @@ int main() {
 
   for (int day = 0; day <= 30; day++) {
     cout << "-------- day " << day << " --------" << endl;
-    cout << "name, days remaining, quality" << endl;
     for (vector<Item>::iterator i = items.begin(); i != items.end(); i++) {
       cout << *i << endl;
     }

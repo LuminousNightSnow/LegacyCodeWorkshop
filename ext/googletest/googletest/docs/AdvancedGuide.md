@@ -1861,7 +1861,7 @@ print a banner warning you if a test program contains any disabled tests.
 
 _Tip:_ You can easily count the number of disabled tests you have
 using `grep`. This number can be used as a metric for improving your
-test quality.
+test v.
 
 _Availability:_ Linux, Windows, Mac.
 
