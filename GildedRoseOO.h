@@ -9,7 +9,7 @@ public:
 
   GildedRoseOO(ItemContainer &items) : items(items) {}
   void updateQuality() {
-    for (auto item : items) {
+    for (const auto &item : items) {
       item->Update();
     }
   }

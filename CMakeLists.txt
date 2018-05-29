@@ -8,6 +8,7 @@ set(CMAKE_THREAD_LIBS_INIT pthread)
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_FLAGS  "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
 set(CMAKE_CXX_FLAGS  "-Wall")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(EXT_PROJECTS_DIR ${PROJECT_SOURCE_DIR}/ext)
 set(gtest_SOURCE_DIR ${EXT_PROJECTS_DIR}/googletest/googletest)
@@ -35,7 +36,7 @@ set(GILDED_ROSE_CHARAC_TESTS_SOURCE_FILES
 #        ${GILDED_ROSE_TEXT_TESTS_SOURCE_FILES})
 
 add_subdirectory(${gtest_SOURCE_DIR} ${gtest_SOURCE_DIR}/bin EXCLUDE_FROM_ALL)
-add_executable(GildedRose ${GILDED_ROSE_SOURCE_FILES} GildedRoseMain.cc)
+add_executable(GildedRose ${GILDED_ROSE_SOURCE_FILES} GildedRoseMain.cc GildedRoseConditionals.cpp GildedRoseConditionals.h ItemTypes.h)
 
 add_executable(GildedRoseOO ${GILDED_ROSE_SOURCE_FILES} GildedRoseOOMain.cc)
 

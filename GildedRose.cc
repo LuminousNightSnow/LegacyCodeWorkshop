@@ -8,16 +8,16 @@ void GildedRose::updateQuality() {
       UpdateNormalItem(item);
       continue;
     }
-    if (item.name == "Aged Brie") {
+    if (item.name == Items::Aged_Brie) {
       UpdateBrieItem(item);
       continue;
     }
 
-    if (item.name == "Sulfuras, Hand of Ragnaros") {
+    if (item.name == Items::Sulfuras_Hand_of_Ragnaros) {
       continue;
     }
 
-    if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
+    if (item.name == Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
       UpdateBackstagePassItem(item);
       continue;
     }
@@ -25,9 +25,9 @@ void GildedRose::updateQuality() {
 }
 
 bool GildedRose::IsSpecialItem(Item item) const {
-  return item.name == "Aged Brie" ||
-         item.name == "Sulfuras, Hand of Ragnaros" ||
-         item.name == "Backstage passes to a TAFKAL80ETC concert";
+  return item.name == Items::Aged_Brie ||
+         item.name == Items::Sulfuras_Hand_of_Ragnaros ||
+         item.name == Items::Backstage_passes_to_a_TAFKAL80ETC_concert;
 }
 
 void GildedRose::UpdateNormalItem(Item &item) const {

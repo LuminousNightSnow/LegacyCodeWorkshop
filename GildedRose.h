@@ -1,3 +1,4 @@
+#include "ItemTypes.h"
 #include <string>
 #include <vector>
 
@@ -5,10 +6,10 @@ using namespace std;
 
 class Item {
 public:
-  string name;
+  Items name;
   int days_remaining;
   int quality;
-  Item(string name, int days_remaining, int quality)
+  Item(Items name, int days_remaining, int quality)
       : name(name), days_remaining(days_remaining), quality(quality) {}
 };
 
