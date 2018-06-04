@@ -2,7 +2,7 @@
 
 std::ostream &operator<<(std::ostream &s, Item &item) {
 
-  s << item.name_ << ", " << item.d << ", " << item.v;
+  s << item.name_ << ", " << item.d << ", " << item.quality;
   return s;
 }
 
@@ -10,23 +10,23 @@ void GildedRose::updateQuality() {
   for (int i = 0; i < items_.size(); i++) {
     if (items_[i].item_type != Items::Aged_Brie &&
         items_[i].item_type != Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
-      if (items_[i].v > 0) {
+      if (items_[i].quality > 0) {
         if (items_[i].item_type != Items::Sulfuras_Hand_of_Ragnaros) {
-          items_[i].v -= 1;
+          items_[i].quality -= 1;
         }
       }
     } else {
-      if (items_[i].v < 50) {
-        items_[i].v = items_[i].v + 1;
+      if (items_[i].quality < 50) {
+        items_[i].quality = items_[i].quality + 1;
         if (items_[i].item_type == Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
           if (items_[i].d < 11) {
-            if (items_[i].v < 50) {
-              items_[i].v += 1;
+            if (items_[i].quality < 50) {
+              items_[i].quality += 1;
             }
           }
           if (items_[i].d < 6) {
-            if (items_[i].v < 50) {
-              items_[i].v++;
+            if (items_[i].quality < 50) {
+              items_[i].quality++;
             }
           }
         }
@@ -38,17 +38,17 @@ void GildedRose::updateQuality() {
     if (items_[i].d < 0) {
       if (items_[i].item_type != Items::Aged_Brie) {
         if (items_[i].item_type != Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
-          if (items_[i].v > 0) {
+          if (items_[i].quality > 0) {
             if (items_[i].item_type != Items::Sulfuras_Hand_of_Ragnaros) {
-              items_[i].v = items_[i].v - 1;
+              items_[i].quality = items_[i].quality - 1;
             }
           }
         } else {
-          items_[i].v = items_[i].v - items_[i].v;
+          items_[i].quality = items_[i].quality - items_[i].quality;
         }
       } else {
-        if (items_[i].v < 50) {
-          ++items_[i].v;
+        if (items_[i].quality < 50) {
+          ++items_[i].quality;
         }
       }
     }
