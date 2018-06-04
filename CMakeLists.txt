@@ -22,11 +22,11 @@ set(GILDED_ROSE_SOURCE_FILES
 
 set(GILDED_ROSE_UNIT_TESTS_SOURCE_FILES
         ${GILDED_ROSE_SOURCE_FILES}
-        GildedRoseUnitTests.cc)
+        GildedRoseUnitTests.cc GildedRoseCharacterizationTests.cc)
 
-#set(SOURCE_FILES
-#        ${GILDED_ROSE_SOURCE_FILES}
-#        ${GILDED_ROSE_TEXT_TESTS_SOURCE_FILES})
+set(GILDED_ROSE_CHARAC_TESTS_SOURCE_FILES
+        ${GILDED_ROSE_SOURCE_FILES}
+        GildedRoseCharacterizationTests.cc)
 
 add_subdirectory(${gtest_SOURCE_DIR} ${gtest_SOURCE_DIR}/bin EXCLUDE_FROM_ALL)
 add_executable(GildedRose ${GILDED_ROSE_SOURCE_FILES} GildedRoseMain.cc)
@@ -35,3 +35,6 @@ add_executable(GildedRose ${GILDED_ROSE_SOURCE_FILES} GildedRoseMain.cc)
 
 add_executable(GildedRoseUnitTests ${GILDED_ROSE_UNIT_TESTS_SOURCE_FILES})
 target_link_libraries(GildedRoseUnitTests gtest gtest_main ${CMAKE_THREAD_LIBS_INIT})
+
+add_executable(GildedRoseCharacterizationTests ${GILDED_ROSE_CHARAC_TESTS_SOURCE_FILES})
+target_link_libraries(GildedRoseCharacterizationTests gtest gtest_main ${CMAKE_THREAD_LIBS_INIT})

@@ -23,7 +23,7 @@ private:
 
 class GildedRose {
 public:
-  void printItems();
+  void printItems(std::ostream& out_stream = std::cout);
   void addItem(const Item &item);
   void updateQuality();
 

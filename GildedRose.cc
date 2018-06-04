@@ -56,8 +56,8 @@ void GildedRose::updateQuality() {
 
 void GildedRose::addItem(const Item &item) { items_.push_back(item); }
 
-void GildedRose::printItems() {
+void GildedRose::printItems(std::ostream& out_stream) {
   for (vector<Item>::iterator i = items_.begin(); i != items_.end(); i++) {
-    std::cout << *i << std::endl;
+    out_stream << *i << std::endl;
   }
 }
