@@ -18,7 +18,7 @@ enum class Items {
 class Item {
 public:
   Item(const string &name, int days_remaining, int quality)
-      : name_{name}, d{days_remaining}, quality{quality} {
+      : name_{name}, days_remaining{days_remaining}, quality{quality} {
     if (name == "Aged Brie") {
       item_type = Items::Aged_Brie;
     } else if (name == "Backstage passes to a TAFKAL80ETC concert") {
@@ -35,7 +35,7 @@ public:
 private:
   string name_;
   Items item_type;
-  int d;
+  int days_remaining;
   int quality;
 };
 

@@ -2,7 +2,7 @@
 
 std::ostream &operator<<(std::ostream &s, Item &item) {
 
-  s << item.name_ << ", " << item.d << ", " << item.quality;
+  s << item.name_ << ", " << item.days_remaining << ", " << item.quality;
   return s;
 }
 
@@ -19,12 +19,12 @@ void GildedRose::updateQuality() {
       if (items_[i].quality < 50) {
         items_[i].quality = items_[i].quality + 1;
         if (items_[i].item_type == Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
-          if (items_[i].d < 11) {
+          if (items_[i].days_remaining < 11) {
             if (items_[i].quality < 50) {
               items_[i].quality += 1;
             }
           }
-          if (items_[i].d < 6) {
+          if (items_[i].days_remaining < 6) {
             if (items_[i].quality < 50) {
               items_[i].quality++;
             }
@@ -33,9 +33,9 @@ void GildedRose::updateQuality() {
       }
     }
     if (items_[i].item_type != Items::Sulfuras_Hand_of_Ragnaros) {
-      --items_[i].d;
+      --items_[i].days_remaining;
     }
-    if (items_[i].d < 0) {
+    if (items_[i].days_remaining < 0) {
       if (items_[i].item_type != Items::Aged_Brie) {
         if (items_[i].item_type != Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
           if (items_[i].quality > 0) {
