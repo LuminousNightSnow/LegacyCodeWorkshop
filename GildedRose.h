@@ -49,7 +49,4 @@ private:
   vector<Item> items_;
 };
 
-const std::string item1 = "Aged Brie";
-const std::string item2 = "Backstage passes to a TAFKAL80ETC concert";
-const std::string item3 = "Sulfuras, Hand of Ragnaros";
 #endif // GILDEDROSE_H
