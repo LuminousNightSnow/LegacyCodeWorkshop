@@ -21,6 +21,11 @@ public:
   friend class GildedRose;
   friend std::ostream &operator<<(std::ostream &s, Item &item);
 
+  const string &getName_() const { return name_; }
+  Items getItem_type() const { return item_type; }
+  int GetDaysRemaining() const { return days_remaining; }
+  int getQuality() const { return quality; }
+
 private:
   string name_;
   Items item_type;
@@ -29,13 +34,21 @@ private:
 };
 
 class GildedRose {
+private:
+  using Items_t = std::vector<Item>;
+
 public:
+  using iterator = Items_t::iterator;
+  using const_iterator = Items_t::const_iterator;
   void printItems(std::ostream &out_stream = std::cout);
   void addItem(const Item &item);
   void updateQuality();
 
+  const_iterator begin() { return items_.cbegin(); };
+  const_iterator end() { return items_.cend(); }
+
 private:
-  vector<Item> items_;
+  Items_t items_;
 };
 
 #endif // GILDEDROSE_H

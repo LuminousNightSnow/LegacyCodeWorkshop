@@ -12,7 +12,7 @@ std::string ReadCharacterizationInput(const std::string &file_name) {
   return s.str();
 }
 
-TEST(GildedRoseTest, Foo) {
+TEST(GildedRoseTest, CharacterizationTest) {
   std::string ground_truth =
       ReadCharacterizationInput("../input_for_characterization_test.txt");
 
