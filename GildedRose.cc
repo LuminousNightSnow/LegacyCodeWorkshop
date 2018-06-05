@@ -21,6 +21,10 @@ Item::Item(const string &name, int days_remaining, int quality)
 
 void GildedRose::updateQuality() {
   for (int i = 0; i < items_.size(); i++) {
+    if (!IsSpecialItem(items_[i])) {
+      UpdateNormalItem(items_[i]);
+      return;
+    }
     if (items_[i].item_type != Items::Aged_Brie &&
         items_[i].item_type !=
             Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
@@ -76,5 +80,20 @@ void GildedRose::addItem(const Item &item) { items_.push_back(item); }
 void GildedRose::printItems(std::ostream &out_stream) {
   for (vector<Item>::iterator i = items_.begin(); i != items_.end(); i++) {
     out_stream << *i << std::endl;
+  }
+}
+
+bool GildedRose::IsSpecialItem(Item item) {
+  return item.item_type == Items::Aged_Brie ||
+         item.item_type == Items::Sulfuras_Hand_of_Ragnaros ||
+         item.item_type == Items::Backstage_passes_to_a_TAFKAL80ETC_concert;
+}
+
+void GildedRose::UpdateNormalItem(Item &item) {
+  item.days_remaining -= 1;
+  item.quality = std::max(item.quality - 1, 0);
+
+  if (item.days_remaining < 0) {
+    item.quality = std::max(item.quality - 1, 0);
   }
 }

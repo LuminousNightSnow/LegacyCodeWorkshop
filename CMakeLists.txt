@@ -6,7 +6,7 @@ project(cpp)
 set(CMAKE_THREAD_LIBS_INIT pthread)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS  "-g -O0 -Wall -fno-exceptions -fprofile-arcs -ftest-coverage")
+#set(CMAKE_CXX_FLAGS  "-g -O0 -Wall -fno-exceptions -fprofile-arcs -ftest-coverage")
 
 set(EXT_PROJECTS_DIR ${PROJECT_SOURCE_DIR}/ext)
 set(gtest_SOURCE_DIR ${EXT_PROJECTS_DIR}/googletest/googletest)
