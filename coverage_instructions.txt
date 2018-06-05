@@ -1,0 +1,3 @@
+ ../../GildedRoseCharacterizationTests.exe
+gcov GildedRoseCharacterizationTests.cc.gcno
+gcovr -r ../../../ --html --html-details -o example-html-details.html
