@@ -24,7 +24,7 @@ public:
   const string &getName_() const { return name_; }
   Items getItem_type() const { return item_type; }
   int GetDaysRemaining() const { return days_remaining; }
-  int getQuality() const { return quality; }
+  int GetQuality() const { return quality; }
 
 private:
   string name_;
