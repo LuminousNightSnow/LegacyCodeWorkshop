@@ -1,3 +1,4 @@
- ../../GildedRoseCharacterizationTests.exe
-gcov GildedRoseCharacterizationTests.cc.gcno
-gcovr -r ../../../ --html --html-details -o example-html-details.html
+ cd cmake-build-debug/CMakeFiles/GildedRoseUnitTests.dir/
+ ../../GildedRoseUnitTests.exe
+ gcov GildedRoseUnitTests.cc.gcno
+ gcovr -r ../../../  --exclude-unreachable-branches --html --html-details -o example-html-details.html
