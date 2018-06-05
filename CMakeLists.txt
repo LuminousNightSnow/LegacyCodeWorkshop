@@ -23,7 +23,7 @@ set(GILDED_ROSE_SOURCE_FILES
 
 set(GILDED_ROSE_UNIT_TESTS_SOURCE_FILES
         ${GILDED_ROSE_SOURCE_FILES}
-        GildedRoseUnitTests.cc GildedRoseCharacterizationTests.cc)
+        GildedRoseUnitTests.cc)
 
 set(GILDED_ROSE_CHARAC_TESTS_SOURCE_FILES
         ${GILDED_ROSE_SOURCE_FILES}
