@@ -1,0 +1,6 @@
+cd cmake-build-debug/CMakeFiles/GildedRoseUnitTests.dir
+lcov --zerocounters --directory .
+../../GildedRoseUnitTests
+lcov --rc lcov_branch_coverage=1 --capture --directory . --output-file 
+coverage.info
+genhtml coverage.info --output-directory out --branch-coverage
