@@ -37,54 +37,6 @@ void GildedRose::updateQuality() {
       UpdateBackstagePassItem(items_[i]);
       return;
     }
-
-    if (items_[i].item_type != Items::Aged_Brie &&
-        items_[i].item_type !=
-            Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
-      if (items_[i].quality > 0) {
-        if (items_[i].item_type != Items::Sulfuras_Hand_of_Ragnaros) {
-          items_[i].quality -= 1;
-        }
-      }
-    } else {
-      if (items_[i].quality < 50) {
-        items_[i].quality = items_[i].quality + 1;
-        if (items_[i].item_type ==
-            Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
-          if (items_[i].days_remaining < 11) {
-            if (items_[i].quality < 50) {
-              items_[i].quality += 1;
-            }
-          }
-          if (items_[i].days_remaining < 6) {
-            if (items_[i].quality < 50) {
-              items_[i].quality++;
-            }
-          }
-        }
-      }
-    }
-    if (items_[i].item_type != Items::Sulfuras_Hand_of_Ragnaros) {
-      --items_[i].days_remaining;
-    }
-    if (items_[i].days_remaining < 0) {
-      if (items_[i].item_type != Items::Aged_Brie) {
-        if (items_[i].item_type !=
-            Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
-          if (items_[i].quality > 0) {
-            if (items_[i].item_type != Items::Sulfuras_Hand_of_Ragnaros) {
-              items_[i].quality = items_[i].quality - 1;
-            }
-          }
-        } else {
-          items_[i].quality = items_[i].quality - items_[i].quality;
-        }
-      } else {
-        if (items_[i].quality < 50) {
-          ++items_[i].quality;
-        }
-      }
-    }
   }
 }
 
@@ -98,18 +50,20 @@ void GildedRose::printItems(std::ostream &out_stream) {
 
 void GildedRose::UpdateNormalItem(Item &item) {
   item.days_remaining -= 1;
-  item.quality = std::max(item.quality - 1, 0);
+  DecreaseQuality(item);
 
   if (item.days_remaining < 0) {
-    item.quality = std::max(item.quality - 1, 0);
+    DecreaseQuality(item);
   }
 }
 
 void GildedRose::UpdateAgedBrieItem(Item &item) {
-  const int max_quality_brie = 50;
-  const int quality_increment = (item.days_remaining <= 0) ? 2 : 1;
-  item.quality = std::min(item.quality + quality_increment, max_quality_);
   item.days_remaining -= 1;
+  IncreaseQuality(item);
+
+  if (item.days_remaining < 0) {
+    IncreaseQuality(item);
+  }
 }
 
 void GildedRose::UpdateBackstagePassItem(Item &item) {
@@ -129,4 +83,8 @@ void GildedRose::UpdateBackstagePassItem(Item &item) {
 
 void GildedRose::IncreaseQuality(Item &item) const {
   item.quality = min(item.quality + 1, max_quality_);
+}
+
+void GildedRose::DecreaseQuality(Item &item) const {
+  item.quality = max(item.quality - 1, min_quality_);
 }

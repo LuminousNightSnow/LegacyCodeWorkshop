@@ -49,11 +49,13 @@ public:
 
 private:
   const int max_quality_ = 50;
+  const int min_quality_ = 0;
 
   void UpdateNormalItem(Item &item);
   void UpdateAgedBrieItem(Item &item);
   void UpdateBackstagePassItem(Item &item);
   void IncreaseQuality(Item &item) const;
+  void DecreaseQuality(Item &item) const;
   Items_t items_;
 };
 
