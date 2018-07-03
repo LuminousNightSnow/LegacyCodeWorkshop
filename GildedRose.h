@@ -48,7 +48,6 @@ public:
   const_iterator end() { return items_.cend(); }
 
 private:
-  bool IsSpecialItem(Item item);
   void UpdateNormalItem(Item &item);
   Items_t items_;
 };
