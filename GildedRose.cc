@@ -29,6 +29,14 @@ void GildedRose::updateQuality() {
       UpdateAgedBrieItem(items_[i]);
       return;
     }
+    if (items_[i].item_type == Items::Sulfuras_Hand_of_Ragnaros) {
+      return;
+    }
+    if (items_[i].item_type ==
+        Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
+      UpdateBackstagePassItem(items_[i]);
+      return;
+    }
 
     if (items_[i].item_type != Items::Aged_Brie &&
         items_[i].item_type !=
@@ -100,6 +108,25 @@ void GildedRose::UpdateNormalItem(Item &item) {
 void GildedRose::UpdateAgedBrieItem(Item &item) {
   const int max_quality_brie = 50;
   const int quality_increment = (item.days_remaining <= 0) ? 2 : 1;
-  item.quality = std::min(item.quality + quality_increment, max_quality_brie);
+  item.quality = std::min(item.quality + quality_increment, max_quality_);
   item.days_remaining -= 1;
+}
+
+void GildedRose::UpdateBackstagePassItem(Item &item) {
+  item.days_remaining -= 1;
+  if (item.days_remaining < 0) {
+    item.quality = 0;
+    return;
+  }
+  IncreaseQuality(item);
+  if (item.days_remaining < 10) {
+    IncreaseQuality(item);
+  }
+  if (item.days_remaining < 5) {
+    IncreaseQuality(item);
+  }
+}
+
+void GildedRose::IncreaseQuality(Item &item) const {
+  item.quality = min(item.quality + 1, max_quality_);
 }

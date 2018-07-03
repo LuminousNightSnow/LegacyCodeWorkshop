@@ -48,9 +48,12 @@ public:
   const_iterator end() { return items_.cend(); }
 
 private:
+  const int max_quality_ = 50;
+
   void UpdateNormalItem(Item &item);
   void UpdateAgedBrieItem(Item &item);
-
+  void UpdateBackstagePassItem(Item &item);
+  void IncreaseQuality(Item &item) const;
   Items_t items_;
 };
 
