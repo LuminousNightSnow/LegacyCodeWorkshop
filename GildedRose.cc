@@ -25,6 +25,11 @@ void GildedRose::updateQuality() {
       UpdateNormalItem(items_[i]);
       return;
     }
+    if (items_[i].item_type == Items::Aged_Brie) {
+      UpdateAgedBrieItem(items_[i]);
+      return;
+    }
+
     if (items_[i].item_type != Items::Aged_Brie &&
         items_[i].item_type !=
             Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
@@ -90,4 +95,11 @@ void GildedRose::UpdateNormalItem(Item &item) {
   if (item.days_remaining < 0) {
     item.quality = std::max(item.quality - 1, 0);
   }
+}
+
+void GildedRose::UpdateAgedBrieItem(Item &item) {
+  const int max_quality_brie = 50;
+  const int quality_increment = (item.days_remaining <= 0) ? 2 : 1;
+  item.quality = std::min(item.quality + quality_increment, max_quality_brie);
+  item.days_remaining -= 1;
 }

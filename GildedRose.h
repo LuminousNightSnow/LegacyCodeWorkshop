@@ -49,6 +49,8 @@ public:
 
 private:
   void UpdateNormalItem(Item &item);
+  void UpdateAgedBrieItem(Item &item);
+
   Items_t items_;
 };
 
