@@ -1,5 +1,6 @@
 #ifndef GILDEDROSE_H
 #define GILDEDROSE_H
+#include "IItem.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -15,48 +16,40 @@ enum class Items {
   Other
 };
 
-class Item {
-public:
-  Item(const string &name, int days_remaining, int quality);
-  friend class GildedRose;
-  friend std::ostream &operator<<(std::ostream &s, Item &item);
-
-  const string &getName_() const { return name_; }
-  Items getItem_type() const { return item_type; }
-  int GetDaysRemaining() const { return days_remaining; }
-  int GetQuality() const { return quality; }
-
-private:
-  string name_;
-  Items item_type;
-  int days_remaining;
-  int quality;
-};
+// class Item {
+// public:
+//  Item(const string &name, int days_remaining, int quality);
+//  friend class GildedRose;
+//  friend std::ostream &operator<<(std::ostream &s, Item &item);
+//
+//  const string &getName_() const { return name_; }
+//  Items getItem_type() const { return item_type; }
+//  int GetDaysRemaining() const { return days_remaining; }
+//  int GetQuality() const { return quality; }
+//
+// private:
+//  string name_;
+//  Items item_type;
+//  int days_remaining;
+//  int quality;
+//};
 
 class GildedRose {
 private:
-  using Items_t = std::vector<Item>;
+  using items_t = std::vector<ItemPointer>;
 
 public:
-  using iterator = Items_t::iterator;
-  using const_iterator = Items_t::const_iterator;
   void printItems(std::ostream &out_stream = std::cout);
-  void addItem(const Item &item);
+  void addItem(ItemPointer item);
   void updateQuality();
 
+  using iterator = items_t::iterator;
+  using const_iterator = items_t::const_iterator;
   const_iterator begin() { return items_.cbegin(); };
   const_iterator end() { return items_.cend(); }
 
 private:
-  const int max_quality_ = 50;
-  const int min_quality_ = 0;
-
-  void UpdateNormalItem(Item &item);
-  void UpdateAgedBrieItem(Item &item);
-  void UpdateBackstagePassItem(Item &item);
-  void IncreaseQuality(Item &item) const;
-  void DecreaseQuality(Item &item) const;
-  Items_t items_;
+  items_t items_;
 };
 
 #endif // GILDEDROSE_H
