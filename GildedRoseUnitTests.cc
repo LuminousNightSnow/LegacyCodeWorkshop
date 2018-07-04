@@ -57,6 +57,23 @@ TEST_F(NormalItemTest, before_sell_date) {
   EXPECT_EQ(unit.begin()->GetQuality(), initial_quality_ - 1);
 }
 
+TEST_F(NormalItemTest, before_sell_date_two_items) {
+  days_remaining_ = 10;
+  const int days_remaining_item1 = 7;
+  const int initial_quality_item1 = 25;
+  unit.addItem(
+      Item("Escape Rope", days_remaining_item1, initial_quality_item1));
+  unit.addItem(Item(name_, days_remaining_, initial_quality_));
+  unit.updateQuality();
+
+  auto current_item = unit.begin();
+  EXPECT_EQ(current_item->GetDaysRemaining(), days_remaining_item1 - 1);
+  EXPECT_EQ(current_item->GetQuality(), initial_quality_item1 - 1);
+  current_item++;
+  EXPECT_EQ(current_item->GetDaysRemaining(), days_remaining_ - 1);
+  EXPECT_EQ(current_item->GetQuality(), initial_quality_ - 1);
+}
+
 TEST_F(NormalItemTest, on_sell_date) {
   days_remaining_ = 0;
   MakeAndUpdateItem();
@@ -102,6 +119,25 @@ TEST_F(BrieItemTest, before_sell_date) {
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), initial_quality_ + 1);
 }
+
+TEST_F(BrieItemTest, before_sell_date_two_items) {
+  initial_quality_ = 0;
+  days_remaining_ = 10;
+  const int days_remaining_item1 = 7;
+  const int initial_quality_item1 = 2;
+  unit.addItem(Item(name_, days_remaining_item1, initial_quality_item1));
+  unit.addItem(Item(name_, days_remaining_, initial_quality_));
+  unit.updateQuality();
+
+  auto current_item = unit.begin();
+  EXPECT_EQ(current_item->GetDaysRemaining(), days_remaining_item1 - 1);
+  EXPECT_EQ(current_item->GetQuality(), initial_quality_item1 + 1);
+  current_item++;
+  EXPECT_EQ(current_item->GetDaysRemaining(), days_remaining_ - 1);
+  EXPECT_EQ(current_item->GetQuality(), initial_quality_ + 1);
+}
+
+// TODO: add more tests with more than one item, e.g. for different items
 
 TEST_F(BrieItemTest, before_sell_date_with_max_quality) {
   initial_quality_ = max_quality_;

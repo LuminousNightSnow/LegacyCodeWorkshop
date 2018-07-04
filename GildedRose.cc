@@ -23,19 +23,19 @@ void GildedRose::updateQuality() {
   for (int i = 0; i < items_.size(); i++) {
     if (items_[i].item_type == Items::Other) {
       UpdateNormalItem(items_[i]);
-      return;
+      continue;
     }
     if (items_[i].item_type == Items::Aged_Brie) {
       UpdateAgedBrieItem(items_[i]);
-      return;
+      continue;
     }
     if (items_[i].item_type == Items::Sulfuras_Hand_of_Ragnaros) {
-      return;
+      continue;
     }
     if (items_[i].item_type ==
         Items::Backstage_passes_to_a_TAFKAL80ETC_concert) {
       UpdateBackstagePassItem(items_[i]);
-      return;
+      continue;
     }
   }
 }
