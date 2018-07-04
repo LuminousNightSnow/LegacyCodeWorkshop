@@ -19,7 +19,9 @@ include_directories(${gtest_SOURCE_DIR}/include)
 set(GILDED_ROSE_SOURCE_FILES
         GildedRose.cc
         GildedRose.h
-        IItem.h)
+        IItem.h
+        NormalItem.h
+        BrieItem.h)
 
 set(GILDED_ROSE_UNIT_TESTS_SOURCE_FILES
         ${GILDED_ROSE_SOURCE_FILES}
@@ -27,7 +29,7 @@ set(GILDED_ROSE_UNIT_TESTS_SOURCE_FILES
 
 set(GILDED_ROSE_CHARAC_TESTS_SOURCE_FILES
         ${GILDED_ROSE_SOURCE_FILES}
-        GildedRoseCharacterizationTests.cc ItemUnitTest.cc NormalItem.h)
+        GildedRoseCharacterizationTests.cc ItemUnitTest.cc)
 
 add_subdirectory(${gtest_SOURCE_DIR} ${gtest_SOURCE_DIR}/bin EXCLUDE_FROM_ALL)
 add_executable(GildedRose ${GILDED_ROSE_SOURCE_FILES} GildedRoseMain.cc)

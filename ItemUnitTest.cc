@@ -1,3 +1,4 @@
+#include "BrieItem.h"
 #include "IItem.h"
 #include "NormalItem.h"
 #include <gtest/gtest.h>
@@ -26,6 +27,18 @@ public:
   virtual void MakeAndUpdateItem() override {
 
     unit = MakeItem<NormalItem>(name_, days_remaining_, initial_quality_);
+    unit->update();
+    EXPECT_EQ(unit->GetDaysRemaining(), days_remaining_ - 1);
+  }
+};
+
+class BrieItemTest1 : public ItemTest1 {
+public:
+  BrieItemTest1(const string &name = std::string{"Aged Brie"})
+      : ItemTest1(name) {}
+  virtual void MakeAndUpdateItem() override {
+
+    unit = MakeItem<BrieItem>(name_, days_remaining_, initial_quality_);
     unit->update();
     EXPECT_EQ(unit->GetDaysRemaining(), days_remaining_ - 1);
   }
@@ -75,4 +88,51 @@ TEST_F(NormalItemTest1, sell_date_quality_one) {
   initial_quality_ = 1;
   MakeAndUpdateItem();
   EXPECT_EQ(unit->GetQuality(), initial_quality_ - 1);
+}
+
+TEST_F(BrieItemTest1, before_sell_date) {
+  initial_quality_ = 0;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), initial_quality_ + 1);
+}
+
+TEST_F(BrieItemTest1, before_sell_date_with_max_quality) {
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), initial_quality_);
+}
+
+TEST_F(BrieItemTest1, on_sell_date) {
+  days_remaining_ = 0;
+  initial_quality_ = 10;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), initial_quality_ + 2);
+}
+
+TEST_F(BrieItemTest1, on_sell_date_near_max_quality) {
+  days_remaining_ = 0;
+  initial_quality_ = 49;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), max_quality_);
+}
+
+TEST_F(BrieItemTest1, on_sell_date_with_max_quality) {
+  days_remaining_ = 0;
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), max_quality_);
+}
+
+TEST_F(BrieItemTest1, after_sell_date) {
+  days_remaining_ = -10;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), initial_quality_ + 2);
+}
+
+TEST_F(BrieItemTest1, after_sell_date_with_max_quality) {
+
+  days_remaining_ = -10;
+  initial_quality_ = max_quality_;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), max_quality_);
 }
