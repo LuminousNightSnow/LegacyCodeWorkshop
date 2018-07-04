@@ -12,7 +12,10 @@ public:
   NormalItem(const std::string &name, int days_remaining, int quality)
       : IItem(name, days_remaining, quality) {}
 
-  void update() override {}
+  void update() override {
+    DecreaseQuality();
+    DecreaseDaysRemaining();
+  }
 };
 
 #endif // CPP_NORMALITEM_H

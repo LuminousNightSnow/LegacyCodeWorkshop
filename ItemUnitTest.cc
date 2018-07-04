@@ -13,6 +13,6 @@ TEST(NormalItemTest1, UpdateNormalItem_WhenTypical) {
       MakeItem<NormalItem>(name_, days_remaining_, initial_quality_);
 
   unit->update();
-  EXPECT_EQ(unit->getDaysRemaining(), days_remaining_ - 1);
-  EXPECT_EQ(unit->getQuality(), initial_quality_ - 1);
+  EXPECT_EQ(unit->GetDaysRemaining(), days_remaining_ - 1);
+  EXPECT_EQ(unit->GetQuality(), initial_quality_ - 1);
 }
