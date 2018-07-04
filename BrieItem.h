@@ -16,8 +16,6 @@ public:
 private:
   void UpdateQuality();
 };
-#endif // CPP_BRIEITEM_H
-
 void BrieItem::update() {
   UpdateQuality();
   DecreaseDaysRemaining();
@@ -30,3 +28,5 @@ void BrieItem::UpdateQuality() {
     IncreaseQuality();
   }
 }
+
+#endif // CPP_BRIEITEM_H

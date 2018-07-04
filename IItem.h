@@ -21,6 +21,7 @@ protected:
     quality_ = std::max(quality_ - decrement, min_quality_);
   }
   void IncreaseQuality() { quality_ = std::min(quality_ + 1, max_quality_); }
+  void SetQualityToMinValue() { quality_ = min_quality_; };
   void DecreaseDaysRemaining() { days_remaining_ -= 1; }
 
 private:

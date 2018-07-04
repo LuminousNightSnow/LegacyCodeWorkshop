@@ -44,9 +44,9 @@ protected:
   }
 };
 
-class BackstagePassItem : public ItemTest {
+class BackstagePassItemTest : public ItemTest {
 public:
-  BackstagePassItem(
+  BackstagePassItemTest(
       const string &name_ = "Backstage passes to a TAFKAL80ETC concert")
       : ItemTest(name_) {}
 };
@@ -197,57 +197,59 @@ TEST_F(SulfurasItemTest, after_sell_date) {
   EXPECT_EQ(unit.begin()->GetQuality(), initial_quality_);
 }
 
-TEST_F(BackstagePassItem, long_before_sell_date) {
+TEST_F(BackstagePassItemTest, long_before_sell_date) {
   days_remaining_ = 20;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), initial_quality_ + 1);
 }
 
-TEST_F(BackstagePassItem, close_to_sell_date_upper_bound) {
+TEST_F(BackstagePassItemTest, close_to_sell_date_upper_bound) {
   days_remaining_ = 10;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), initial_quality_ + 2);
 }
 
-TEST_F(BackstagePassItem, close_to_sell_date_upper_bound_at_max_quality) {
+TEST_F(BackstagePassItemTest, close_to_sell_date_upper_bound_at_max_quality) {
   initial_quality_ = max_quality_;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), max_quality_);
 }
 
-TEST_F(BackstagePassItem, close_to_sell_date_lower_bound) {
+TEST_F(BackstagePassItemTest, close_to_sell_date_lower_bound) {
   days_remaining_ = 6;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), initial_quality_ + 2);
 }
 
-TEST_F(BackstagePassItem, close_to_sell_date_lower_bound_at_max_quality) {
+TEST_F(BackstagePassItemTest, close_to_sell_date_lower_bound_at_max_quality) {
   days_remaining_ = 6;
   initial_quality_ = max_quality_;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), max_quality_);
 }
 
-TEST_F(BackstagePassItem, very_close_to_sell_date_upper_bound) {
+TEST_F(BackstagePassItemTest, very_close_to_sell_date_upper_bound) {
   days_remaining_ = 5;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), initial_quality_ + 3);
 }
 
-TEST_F(BackstagePassItem, very_close_to_sell_date_upper_bound_at_max_quality) {
+TEST_F(BackstagePassItemTest,
+       very_close_to_sell_date_upper_bound_at_max_quality) {
   days_remaining_ = 5;
   initial_quality_ = max_quality_;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), max_quality_);
 }
 
-TEST_F(BackstagePassItem, very_close_to_sell_date_lower_bound) {
+TEST_F(BackstagePassItemTest, very_close_to_sell_date_lower_bound) {
   days_remaining_ = 1;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), initial_quality_ + 3);
 }
 
-TEST_F(BackstagePassItem, very_close_to_sell_date_lower_bound_at_max_quality) {
+TEST_F(BackstagePassItemTest,
+       very_close_to_sell_date_lower_bound_at_max_quality) {
 
   days_remaining_ = 1;
   initial_quality_ = max_quality_;
@@ -255,27 +257,28 @@ TEST_F(BackstagePassItem, very_close_to_sell_date_lower_bound_at_max_quality) {
   EXPECT_EQ(unit.begin()->GetQuality(), max_quality_);
 }
 
-TEST_F(BackstagePassItem, on_sell_date) {
+TEST_F(BackstagePassItemTest, on_sell_date) {
 
   days_remaining_ = 0;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), 0);
 }
 
-TEST_F(BackstagePassItem, after_sell_date) {
+TEST_F(BackstagePassItemTest, after_sell_date) {
   days_remaining_ = -1;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), 0);
 }
 
-TEST_F(BackstagePassItem, very_close_to_sell_date_lower_bound_at_quality_48) {
+TEST_F(BackstagePassItemTest,
+       very_close_to_sell_date_lower_bound_at_quality_48) {
   days_remaining_ = 5;
   initial_quality_ = 48;
   MakeAndUpdateItem();
   EXPECT_EQ(unit.begin()->GetQuality(), 50);
 }
 
-TEST_F(BackstagePassItem, close_to_sell_date_lower_bound_at_quality_49) {
+TEST_F(BackstagePassItemTest, close_to_sell_date_lower_bound_at_quality_49) {
   days_remaining_ = 5;
   initial_quality_ = 49;
   MakeAndUpdateItem();
