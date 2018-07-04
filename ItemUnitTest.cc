@@ -1,6 +1,7 @@
 #include "BrieItem.h"
 #include "IItem.h"
 #include "NormalItem.h"
+#include "SulfurasItem.h"
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -41,6 +42,18 @@ public:
     unit = MakeItem<BrieItem>(name_, days_remaining_, initial_quality_);
     unit->update();
     EXPECT_EQ(unit->GetDaysRemaining(), days_remaining_ - 1);
+  }
+};
+
+class SulfurasItemTest1 : public ItemTest1 {
+public:
+  SulfurasItemTest1(const string &name = std::string{"Aged Brie"})
+      : ItemTest1(name) {}
+  virtual void MakeAndUpdateItem() override {
+
+    unit = MakeItem<SulfurasItem>(name_, days_remaining_, initial_quality_);
+    unit->update();
+    EXPECT_EQ(unit->GetDaysRemaining(), days_remaining_);
   }
 };
 
@@ -135,4 +148,21 @@ TEST_F(BrieItemTest1, after_sell_date_with_max_quality) {
   initial_quality_ = max_quality_;
   MakeAndUpdateItem();
   EXPECT_EQ(unit->GetQuality(), max_quality_);
+}
+
+TEST_F(SulfurasItemTest1, before_sell_date) {
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), initial_quality_);
+}
+
+TEST_F(SulfurasItemTest1, on_sell_date) {
+  days_remaining_ = 0;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), initial_quality_);
+}
+
+TEST_F(SulfurasItemTest1, after_sell_date) {
+  days_remaining_ = -1;
+  MakeAndUpdateItem();
+  EXPECT_EQ(unit->GetQuality(), initial_quality_);
 }
