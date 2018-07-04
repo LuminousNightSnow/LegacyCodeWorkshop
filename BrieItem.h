@@ -16,17 +16,6 @@ public:
 private:
   void UpdateQuality();
 };
-void BrieItem::update() {
-  UpdateQuality();
-  DecreaseDaysRemaining();
-}
 
-void BrieItem::UpdateQuality() {
-  IncreaseQuality();
-
-  if (GetDaysRemaining() <= 0) {
-    IncreaseQuality();
-  }
-}
 
 #endif // CPP_BRIEITEM_H

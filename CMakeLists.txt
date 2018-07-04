@@ -21,7 +21,7 @@ set(GILDED_ROSE_SOURCE_FILES
         GildedRose.h
         IItem.h
         NormalItem.h
-        BrieItem.h SulfurasItem.h BackstagePassItem.h)
+        BrieItem.h SulfurasItem.h BackstagePassItem.h BrieItem.cc NormalItem.cc BackstagePassItem.cc)
 
 set(GILDED_ROSE_UNIT_TESTS_SOURCE_FILES
         ${GILDED_ROSE_SOURCE_FILES}

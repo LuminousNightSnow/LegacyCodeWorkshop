@@ -18,17 +18,6 @@ private:
   void UpdateQuality();
 };
 
-void NormalItem::update() {
-  UpdateQuality();
-  DecreaseDaysRemaining();
-}
 
-void NormalItem::UpdateQuality() {
-  DecreaseQuality();
-
-  if (GetDaysRemaining() <= 0) {
-    DecreaseQuality();
-  }
-}
 
 #endif // CPP_NORMALITEM_H

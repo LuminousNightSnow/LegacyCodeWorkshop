@@ -41,11 +41,4 @@ ItemPointer MakeItem(const std::string &name, const int days_remaining,
   return std::make_unique<ItemType>(name, days_remaining, quality);
 }
 
-// using ItemPointer = std::shared_ptr<IItem>;
-// template <typename ItemType>
-// ItemPointer MakeItem(const std::string &name, const int days_remaining,
-//                     const int quality) {
-//  return std::make_shared<ItemType>(name, days_remaining, quality);
-//}
-
 #endif // CPP_IITEM_H
